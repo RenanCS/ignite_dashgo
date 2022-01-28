@@ -20,7 +20,8 @@
 O projeto consiste em criar uma página de cadastro e apresentar um grid de pessoas utilizando Chakra UI, seguindo padrões do react:
 - React;
 - Chakra UI;
-
+- Mirage JS;
+- React-Query;
 
 Site: [https://rcsti-dashgo.netlify.app/users](https://rcsti-dashgo.netlify.app/users)
 
