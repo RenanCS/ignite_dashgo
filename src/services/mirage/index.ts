@@ -23,7 +23,7 @@ export const makeServer = () => {
         },
 
         seeds(server) {
-            server.createList('user', 20);
+            server.createList('user', 8);
         },
 
         routes() {
