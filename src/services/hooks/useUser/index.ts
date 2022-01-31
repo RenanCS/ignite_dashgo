@@ -5,7 +5,7 @@ import { FormatDate } from "src/util/formatDate";
 
 const QUERYKEY = 'users';
 
-const mappingAdapterUser = async () => {
+const mappingUser = async () => {
     const userResponse = await getUsers();
 
     const usersFormated: User[] = userResponse.map(user => {
@@ -22,6 +22,6 @@ const mappingAdapterUser = async () => {
 
 export const useUsers = () => {
     return useQuery<User[]>(QUERYKEY, async () => {
-        return await mappingAdapterUser();
+        return await mappingUser();
     });
 }
