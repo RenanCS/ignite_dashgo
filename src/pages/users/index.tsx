@@ -6,26 +6,11 @@ import { Header } from "src/components/Header";
 import { Heading } from "src/components/Heading";
 import { Pagination } from "src/components/Pagination";
 import { Menu } from "src/components/Sidebar/Menu";
-import { useQuery } from "react-query";
-import { getUsers } from "src/controllers/getUsers";
-import { FormatDate } from "src/util/formatDate";
-import { User } from "src/controllers/getUsers/interface";
+import { useUsers } from "src/services/hooks/useUser";
+
 const Users: NextPage = () => {
 
-    const { data = [], isLoading, error } = useQuery<User[]>('users', async () => {
-        const userResponse = await getUsers();
-
-        const usersFormated: User[] = userResponse.map(user => {
-            return {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                createdAt: FormatDate(user.createdAt)
-            }
-        });
-
-        return usersFormated;
-    })
+    const { data = [], isLoading, error, isFetching } = useUsers();
 
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -115,7 +100,7 @@ const Users: NextPage = () => {
 
                 <Box flex="1" borderRadius={8} bg="gray.800" p="8">
                     <Flex mb="8" justify="space-between" align="center">
-                        <Heading />
+                        <Heading isFetching={!isLoading && isFetching} />
 
                         <Link href="/users/create" passHref>
                             <Button as="a" size="sm" fontSize="sm" colorScheme="pink"
