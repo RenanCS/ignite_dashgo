@@ -4,6 +4,7 @@ import { User, UserPagination } from "src/pages/users/interface";
 import { FormatDate } from "src/util/formatDate";
 
 const QUERYKEY = 'users';
+const TIMEFRESH = 1000 * 60 * 2;
 
 const mappingUser = async (page: number): Promise<UserPagination> => {
     const { users, totalCount } = await getUsers(page);
@@ -28,5 +29,7 @@ const mappingUser = async (page: number): Promise<UserPagination> => {
 export const useUsers = (page: number) => {
     return useQuery<UserPagination>([QUERYKEY, { page }], async () => {
         return await mappingUser(page);
+    }, {
+        staleTime: TIMEFRESH
     });
 }
