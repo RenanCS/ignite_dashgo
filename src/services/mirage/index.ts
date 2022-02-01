@@ -2,7 +2,6 @@ import faker from 'faker';
 import { createServer, Factory, Model, Response, Serializer } from 'miragejs';
 import { UserResponse } from './interface';
 
-
 export const makeServer = () => {
     const server = createServer({
         models: {
@@ -43,6 +42,7 @@ export const makeServer = () => {
                     { users }
                 );
             });
+            this.get('/users/:id');
             this.post('/users');
 
             // remove o namespace api para não prejudir as rodas de api do next
