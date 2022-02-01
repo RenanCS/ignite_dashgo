@@ -1,13 +1,17 @@
-import { Box, Button, Checkbox, Flex, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, Link } from "@chakra-ui/react";
 import { NextPage } from "next";
-import Link from "next/link";
-import { useState } from "react";
+import NextLink from "next/link";
+import { useCallback, useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "src/components/Header";
 import { Heading } from "src/components/Heading";
 import { Pagination } from "src/components/Pagination";
 import { Menu } from "src/components/Sidebar/Menu";
+import { getUser } from "src/controllers/getUser";
 import { useUsers } from "src/services/hooks/useUser";
+import { queryClient } from "src/services/queryClient";
+
+const TIMEFRESH = 1000 * 60 * 10;
 
 const Users: NextPage = () => {
 
@@ -18,6 +22,15 @@ const Users: NextPage = () => {
         base: false,
         md: true
     })
+
+    const handlePerfetchUser = useCallback(async (userId: number) => {
+        await queryClient.prefetchQuery(['user', userId], async () => {
+            return await getUser(userId)
+        },
+            {
+                staleTime: TIMEFRESH
+            });
+    }, [])
 
     const renderTable = (): JSX.Element => {
         if (isLoading) {
@@ -61,7 +74,9 @@ const Users: NextPage = () => {
                                         </Td>
                                         <Td>
                                             <Box>
-                                                <Text fontWeight="bold">{user.name}</Text>
+                                                <Link color="purple.400" onMouseEnter={() => handlePerfetchUser(user.id)}>
+                                                    <Text fontWeight="bold">{user.name}</Text>
+                                                </Link>
                                                 <Text fontSize="sm" color="gray.300">{user.email}</Text>
                                             </Box>
                                         </Td>
@@ -108,12 +123,12 @@ const Users: NextPage = () => {
                     <Flex mb="8" justify="space-between" align="center">
                         <Heading isFetching={!isLoading && isFetching} />
 
-                        <Link href="/users/create" passHref>
+                        <NextLink href="/users/create" passHref>
                             <Button as="a" size="sm" fontSize="sm" colorScheme="pink"
                                 leftIcon={<Icon as={RiAddLine} fontSize="20" />}>
                                 Criar novo
                             </Button>
-                        </Link>
+                        </NextLink>
                     </Flex>
                     {
                         renderTable()
