@@ -1,9 +1,9 @@
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import { Box, Stack, Text } from "@chakra-ui/react";
 import { genertePagesArray } from "src/util/genertePagesArray";
+import { Library } from "src/util/readOnly";
 import { PaginationProps } from "./interface";
 import { PaginationItem } from "./PaginationItem";
 
-const SIBLIGNSCOUNT = 1
 
 export const Pagination: React.FC<PaginationProps> = ({
     totalCountOfRegisters,
@@ -12,14 +12,14 @@ export const Pagination: React.FC<PaginationProps> = ({
     onPageChange
 }) => {
 
-    const lastPage = Math.floor(totalCountOfRegisters / registersPerPage);
+    const lastPage = Math.ceil(totalCountOfRegisters / registersPerPage);
 
     const previousPages = currentPage > 1
-        ? genertePagesArray(currentPage - 1 - SIBLIGNSCOUNT, currentPage - 1)
+        ? genertePagesArray(currentPage - 1 - Library.SIBLIGNSCOUNT, currentPage - 1)
         : []
 
     const nextPages = currentPage < lastPage
-        ? genertePagesArray(currentPage, Math.min(currentPage + SIBLIGNSCOUNT, lastPage))
+        ? genertePagesArray(currentPage, Math.min(currentPage + Library.SIBLIGNSCOUNT, lastPage))
         : []
 
     return (
@@ -34,10 +34,10 @@ export const Pagination: React.FC<PaginationProps> = ({
                 <strong>0</strong> - <strong>10</strong> de <strong>100</strong>
             </Box>
             <Stack direction="row" spacing="2">
-                {currentPage > (1 + SIBLIGNSCOUNT) && (
+                {currentPage > (1 + Library.SIBLIGNSCOUNT) && (
                     <>
                         <PaginationItem onPageChange={onPageChange} number={1} />
-                        {currentPage > (2 + SIBLIGNSCOUNT) &&
+                        {currentPage > (2 + Library.SIBLIGNSCOUNT) &&
                             <Text color="gray.300" width="8" textAlign="center">...</Text>
                         }
                     </>
@@ -54,9 +54,9 @@ export const Pagination: React.FC<PaginationProps> = ({
                     return <PaginationItem onPageChange={onPageChange} key={page} number={page} />
                 })}
 
-                {(currentPage + SIBLIGNSCOUNT) < lastPage && (
+                {(currentPage + Library.SIBLIGNSCOUNT) < lastPage && (
                     <>
-                        {(currentPage + 1 + SIBLIGNSCOUNT) < lastPage && <Text>...</Text>}
+                        {(currentPage + 1 + Library.SIBLIGNSCOUNT) < lastPage && <Text>...</Text>}
                         <PaginationItem onPageChange={onPageChange} number={lastPage} />
                     </>
                 )}
