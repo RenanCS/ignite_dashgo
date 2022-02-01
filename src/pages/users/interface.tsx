@@ -4,3 +4,8 @@ export interface User {
     createdAt: string;
     id: number
 }
+
+export interface UserPagination {
+    users: User[]
+    totalCount: number;
+}

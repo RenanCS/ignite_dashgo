@@ -1,6 +1,5 @@
-export interface User {
-    name: string;
-    email: string;
-    createdAt: string;
-    id: number;
+import { UserResponse } from "src/services/mirage/interface";
+export interface UserPaginationResponse {
+    users: UserResponse[],
+    totalCount: number
 }
