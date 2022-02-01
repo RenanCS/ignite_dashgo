@@ -1,11 +1,14 @@
 import faker from 'faker';
-import { createServer, Factory, Model, Response, Serializer } from 'miragejs';
-import { UserResponse } from './interface';
+import { createServer, Factory, Model, Response, ActiveModelSerializer } from 'miragejs';
+import { UserMirage } from './interface';
 
 export const makeServer = () => {
     const server = createServer({
+        serializers: {
+            application: ActiveModelSerializer,
+        },
         models: {
-            user: Model.extend<Partial<UserResponse>>({})
+            user: Model.extend<Partial<UserMirage>>({})
         },
         factories: {
             user: Factory.extend({
@@ -20,8 +23,6 @@ export const makeServer = () => {
                 }
             })
         },
-
-
         routes() {
             this.namespace = 'api';
             this.timing = 750;
@@ -51,7 +52,7 @@ export const makeServer = () => {
         },
 
         seeds(server) {
-            server.createList('user', 200);
+            server.createList('user', 2);
         },
 
     })

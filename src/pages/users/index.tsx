@@ -10,8 +10,8 @@ import { Menu } from "src/components/Sidebar/Menu";
 import { getUser } from "src/controllers/getUser";
 import { useUsers } from "src/services/hooks/useUser";
 import { queryClient } from "src/services/queryClient";
+import { Library } from "src/util/readOnly";
 
-const TIMEFRESH = 1000 * 60 * 10;
 
 const Users: NextPage = () => {
 
@@ -24,11 +24,11 @@ const Users: NextPage = () => {
     })
 
     const handlePerfetchUser = useCallback(async (userId: number) => {
-        await queryClient.prefetchQuery(['user', userId], async () => {
+        await queryClient.prefetchQuery(['user', String(userId)], async () => {
             return await getUser(userId)
         },
             {
-                staleTime: TIMEFRESH
+                staleTime: Library.TIMEFRESHUSER
             });
     }, [])
 

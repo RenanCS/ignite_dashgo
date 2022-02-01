@@ -2,19 +2,17 @@ import { useQuery } from "react-query";
 import { getUsers } from "src/controllers/getUsers";
 import { User, UserPagination } from "src/pages/users/interface";
 import { FormatDate } from "src/util/formatDate";
-
-const QUERYKEY = 'users';
-const TIMEFRESH = 1000 * 60 * 2;
+import { Library } from "src/util/readOnly";
 
 const mappingUser = async (page: number): Promise<UserPagination> => {
     const { users, totalCount } = await getUsers(page);
-
+    debugger;
     const usersFormated: User[] = users.map(user => {
         return {
-            id: user.id,
+            id: user?.id,
             name: user.name,
             email: user.email,
-            createdAt: FormatDate(user.createdAt)
+            createdAt: FormatDate(user.created_at)
         }
     });
 
@@ -27,9 +25,9 @@ const mappingUser = async (page: number): Promise<UserPagination> => {
 }
 
 export const useUsers = (page: number) => {
-    return useQuery<UserPagination>([QUERYKEY, { page }], async () => {
+    return useQuery<UserPagination>([Library.QUERYKEY, { page }], async () => {
         return await mappingUser(page);
     }, {
-        staleTime: TIMEFRESH
+        staleTime: Library.TIMEFRESHGRID
     });
 }

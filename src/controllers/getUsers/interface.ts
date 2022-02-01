@@ -1,5 +1,5 @@
-import { UserResponse } from "src/services/mirage/interface";
+import { UserMirage } from "src/services/mirage/interface";
 export interface UserPaginationResponse {
-    users: UserResponse[],
+    users: UserMirage[],
     totalCount: number
 }

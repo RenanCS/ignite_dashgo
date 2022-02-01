@@ -1,6 +1,6 @@
-export interface UserResponse {
+export interface UserMirage {
     name: string;
     email: string;
-    createdAt: string;
-    id: number;
+    created_at: Date;
+    id?: number;
 }
