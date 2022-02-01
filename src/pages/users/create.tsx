@@ -1,12 +1,18 @@
 import { Box, Button, Divider, Flex, Heading, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { NextPage } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from "react-query";
 import { Input } from "src/components/Form/Input";
 import { Header } from "src/components/Header";
 import { Menu } from "src/components/Sidebar/Menu";
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
+import { saveUser } from 'src/controllers/saveUser';
+import { queryClient } from "src/services/queryClient";
+import { Library } from "src/util/readOnly";
+import * as yup from "yup";
+import { CreateUserFormData } from "./interface";
 
 const validationSchema = yup.object().shape({
     password: yup
@@ -29,25 +35,30 @@ const validationSchema = yup.object().shape({
         ], "As senhas precisam ser iguais")
 });
 
-type CreateUserFormData = {
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-}
 
 
 const CreateUser: NextPage = () => {
 
-    const { register, formState: { errors, isValid, isSubmitting }, handleSubmit } = useForm<CreateUserFormData>({
+    const router = useRouter();
+
+    const createUser = useMutation(async (user: CreateUserFormData) => {
+        const newUser = await saveUser(user)
+        return newUser
+    }, {
+        onSuccess: () => {
+            queryClient.invalidateQueries(Library.QUERYKEY)
+        }
+    });
+
+    const { register, formState: { errors, isValid, isSubmitting }, handleSubmit, reset } = useForm<CreateUserFormData>({
         mode: "onChange",
         resolver: yupResolver(validationSchema)
     });
 
-    const handleSignIn: SubmitHandler<CreateUserFormData> = async (values) => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        console.log(values);
+    const handleCreateUser: SubmitHandler<CreateUserFormData> = async (values) => {
+        await createUser.mutateAsync(values);
+        reset();
+        router.push('/users');
     };
 
 
@@ -66,7 +77,7 @@ const CreateUser: NextPage = () => {
 
                 <Box
                     as="form"
-                    onSubmit={handleSubmit(handleSignIn)}
+                    onSubmit={handleSubmit(handleCreateUser)}
                     flex="1" borderRadius={8} bg="gray.800" p={["6", "8"]}>
 
                     <Heading size="lg" fontWeight="normal">Criar usuário</Heading>
