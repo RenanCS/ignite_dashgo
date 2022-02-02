@@ -1,10 +1,11 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryResult } from "react-query";
 import { getUsers } from "src/controllers/getUsers";
+import { UserMirage } from "src/services/mirage/interface";
 import { FormatDate } from "src/util/formatDate";
 import { Library } from "src/util/readOnly";
 import { User, UserPagination } from "./interface";
 
-const mappingUser = async (page: number): Promise<UserPagination> => {
+export const factoryUser = async (page: number): Promise<UserPagination> => {
     const { users, totalCount } = await getUsers(page);
 
     const usersFormated: User[] = users.map(user => {
@@ -25,9 +26,8 @@ const mappingUser = async (page: number): Promise<UserPagination> => {
 }
 
 export const useUsers = (page: number) => {
-    return useQuery<UserPagination>([Library.QUERYKEY, { page }], async () => {
-        return await mappingUser(page);
-    }, {
-        staleTime: Library.TIMEFRESHGRID
-    });
+    return useQuery<UserPagination>(
+        [Library.QUERYKEY, { page }],
+        () => factoryUser(page),
+    );
 }
