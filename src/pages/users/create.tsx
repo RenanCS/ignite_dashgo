@@ -12,7 +12,6 @@ import { saveUser } from 'src/controllers/saveUser';
 import { queryClient } from "src/services/queryClient";
 import { Library } from "src/util/readOnly";
 import * as yup from "yup";
-import { CreateUserFormData } from "./interface";
 
 const validationSchema = yup.object().shape({
     password: yup
@@ -35,6 +34,14 @@ const validationSchema = yup.object().shape({
         ], "As senhas precisam ser iguais")
 });
 
+
+type CreateUserFormData = {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    password_confirmation: string;
+}
 
 
 const CreateUser: NextPage = () => {

@@ -1,6 +1,5 @@
-import { CreateUserFormData } from "src/pages/users/interface";
 import { api } from "src/services/axios";
-import { UserRequest } from "./interface";
+import { UserRequest, CreateUserFormData } from "./interface";
 
 export const saveUser = async (user: CreateUserFormData): Promise<CreateUserFormData> => {
     const userRequest: UserRequest = {

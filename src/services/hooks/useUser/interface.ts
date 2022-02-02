@@ -10,10 +10,4 @@ export interface UserPagination {
     totalCount: number;
 }
 
-export interface CreateUserFormData {
-    id: number;
-    name: string;
-    email: string;
-    password: string;
-    password_confirmation: string;
-}
+

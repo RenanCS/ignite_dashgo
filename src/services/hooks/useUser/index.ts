@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import { getUsers } from "src/controllers/getUsers";
-import { User, UserPagination } from "src/pages/users/interface";
 import { FormatDate } from "src/util/formatDate";
 import { Library } from "src/util/readOnly";
+import { User, UserPagination } from "./interface";
 
 const mappingUser = async (page: number): Promise<UserPagination> => {
     const { users, totalCount } = await getUsers(page);
