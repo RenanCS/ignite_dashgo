@@ -6,7 +6,7 @@ import { Library } from "src/util/readOnly";
 
 const mappingUser = async (page: number): Promise<UserPagination> => {
     const { users, totalCount } = await getUsers(page);
-    debugger;
+
     const usersFormated: User[] = users.map(user => {
         return {
             id: user?.id,
