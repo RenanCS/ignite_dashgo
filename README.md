@@ -69,6 +69,16 @@ $ yarn start
 ---
 
 ## ❌Problemas encontrados
+- Erro 400: utilizando mirage com axios
+
+  Solução: https://miragejs.com/quickstarts/nextjs/develop-a-page/
+
+  Obs: SSR no mirage não vai funcionar 
+
+  
+
+
+
 
 
 
