@@ -1,7 +1,9 @@
 import { api } from "src/services/axios";
-import { UserResponse } from "src/services/mirage/interface";
+import { UserMirage } from "src/services/mirage/interface";
 
-export const getUser = async (userId: number): Promise<UserResponse> => {
-    const { data } = await api.get<UserResponse>(`/users/${userId}`);
+export const getUser = async (userId: number): Promise<UserMirage> => {
+
+    const { data } = await api.get<UserMirage>(`/users/${userId}`);
+
     return data;
 }
