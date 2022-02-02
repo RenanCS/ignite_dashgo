@@ -7,7 +7,7 @@ import { makeServer } from 'src/services/mirage'
 import { queryClient } from 'src/services/queryClient'
 import { theme } from 'src/styles/theme'
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NEXT_PUBLIC_NODE_ENV === 'development') {
   makeServer();
 }
 
