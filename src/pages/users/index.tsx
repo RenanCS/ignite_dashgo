@@ -1,12 +1,13 @@
 import { Box, Button, Checkbox, Flex, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, Link } from "@chakra-ui/react";
 import { NextPage } from "next";
 import NextLink from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "src/components/Header";
 import { Heading } from "src/components/Heading";
 import { Pagination } from "src/components/Pagination";
 import { Menu } from "src/components/Sidebar/Menu";
+import { AuthContext } from "src/contexts/AuthContext";
 import { getUser } from "src/controllers/getUser";
 import { useUsers } from "src/services/hooks/useUser";
 import { queryClient } from "src/services/queryClient";
@@ -15,6 +16,7 @@ import { Library } from "src/util/readOnly";
 
 const Users: NextPage = () => {
 
+    const { getMeInfo, isAuthenticated } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1)
     const { data, isLoading, error, isFetching } = useUsers(currentPage);
 
@@ -105,6 +107,14 @@ const Users: NextPage = () => {
             )
         }
     }
+
+    useEffect(() => {
+        const fetchMe = async () => {
+            await getMeInfo();
+        }
+
+        fetchMe();
+    }, [getMeInfo])
 
     return (
         <Box>
