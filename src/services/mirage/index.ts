@@ -46,8 +46,9 @@ export const makeServer = () => {
             this.get('/users/:id');
             this.post('/users');
 
-            // remove o namespace api para não prejudir as rodas de api do next
+            // remove o namespace api para não prejudicar as rodas de api do next
             this.namespace = '';
+            this.passthrough(`${process.env.NEXT_PUBLIC_API_SEGURANCA}/**`);
             this.passthrough();
         },
 
