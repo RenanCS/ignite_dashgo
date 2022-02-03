@@ -4,6 +4,9 @@ import { Input } from 'src/components/Form/Input'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import { useContext } from 'react'
+import { AuthContext } from 'src/contexts/AuthContext'
+import { useRouter } from 'next/router'
 
 
 const validationSchema = yup.object().shape({
@@ -25,15 +28,20 @@ type SignInFormData = {
 
 const SignIn: NextPage = () => {
 
-  const { register, formState: { errors, isValid, isSubmitting }, handleSubmit } = useForm<SignInFormData>({
+  const router = useRouter();
+
+  const { signIn, isAuthenticated } = useContext(AuthContext);
+
+  const { register, formState: { errors, isValid, isSubmitting }, handleSubmit, reset } = useForm<SignInFormData>({
     mode: "onChange",
     resolver: yupResolver(validationSchema)
   });
 
   const handleSignIn: SubmitHandler<SignInFormData> = async (values) => {
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    console.log(values);
+    if (await signIn(values)) {
+      reset();
+      router.push('/users');
+    }
   };
 
   return (
@@ -57,7 +65,6 @@ const SignIn: NextPage = () => {
         <Stack spacing="4">
           <Input type="email" label="E-mail" error={errors.email} {...register("email")} />
           <Input type="password" label="Senha" error={errors.password}  {...register("password")} autoComplete="on" />
-
         </Stack>
 
         <Button
