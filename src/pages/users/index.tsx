@@ -16,7 +16,7 @@ import { Library } from "src/util/readOnly";
 
 const Users: NextPage = () => {
 
-    const { getMeInfo, isAuthenticated } = useContext(AuthContext);
+    const { isAuthenticated } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1)
     const { data, isLoading, error, isFetching } = useUsers(currentPage);
 
@@ -108,13 +108,7 @@ const Users: NextPage = () => {
         }
     }
 
-    useEffect(() => {
-        const fetchMe = async () => {
-            await getMeInfo();
-        }
 
-        fetchMe();
-    }, [getMeInfo])
 
     return (
         <Box>

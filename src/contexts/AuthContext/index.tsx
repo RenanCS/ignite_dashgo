@@ -1,7 +1,9 @@
-import { parseCookies } from "nookies";
+import Router from "next/router";
+import { destroyCookie, parseCookies } from "nookies";
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { authenticationUser } from "src/controllers/authenticationUser";
 import { meUser } from "src/controllers/meUser";
+import { Library } from "src/util/readOnly";
 import { AuthContextData, AuthProviderProps, SignInCredentials, UserCredencials } from "./interface";
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -20,6 +22,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
 
         return Promise.resolve(!!authenticated);
+    }, [])
+
+    const signOut = useCallback(() => {
+        destroyCookie(undefined, Library.DASHGOTOKEN);
+        destroyCookie(undefined, Library.DASHGOREFRESHTOKEN);
+        Router.push('/');
     }, [])
 
 
@@ -43,8 +51,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }, [])
 
+    useEffect(() => {
+        getMeInfo()
+
+    }, [getMeInfo])
+
+
     return (
-        <AuthContext.Provider value={{ signIn, getMeInfo, isAuthenticated, userAuthenticated }}>
+        <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, userAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

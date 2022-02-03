@@ -1,6 +1,6 @@
-import { fail } from 'assert';
 import axios, { AxiosError } from 'axios';
-import { parseCookies } from 'nookies';
+import Router from 'next/router';
+import { destroyCookie, parseCookies } from 'nookies';
 import { refreshTokenUser } from 'src/controllers/refreshTokenUser';
 import { Library } from 'src/util/readOnly';
 import { api } from '.';
@@ -62,7 +62,12 @@ apiAuthentication.interceptors.response.use(
 
 
             } else {
-
+                debugger;
+                destroyCookie(undefined, Library.DASHGOTOKEN);
+                destroyCookie(undefined, Library.DASHGOREFRESHTOKEN);
+                Router.push('/');
             }
         }
+
+        return Promise.reject(error);
     });

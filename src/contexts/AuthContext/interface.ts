@@ -9,7 +9,7 @@ export interface AuthContextData {
     isAuthenticated: boolean;
     userAuthenticated: UserCredencials;
     signIn(credentials: SignInCredentials): Promise<boolean>;
-    getMeInfo(): Promise<void>;
+    signOut(): void;
 }
 
 export interface AuthProviderProps {
