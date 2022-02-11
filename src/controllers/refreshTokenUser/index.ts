@@ -1,10 +1,11 @@
 import { setCookie } from "nookies";
 import { UserCredencials } from "src/contexts/AuthContext/interface";
-import { apiAuthentication } from "src/services/axios/autentication";
+import { apiAuthentication } from "src/services/axios/apiClient";
 import { Library } from "src/util/readOnly";
 import { CredencialResponse } from "../authenticationUser/interface";
 
-export const refreshTokenUser = async (refreshToken: string): Promise<string> => {
+
+export const refreshTokenUser = async (ctx = undefined, refreshToken: string): Promise<string> => {
     try {
         const { data } = await apiAuthentication.post<CredencialResponse>(`/refresh`, {
             refreshToken
@@ -15,8 +16,8 @@ export const refreshTokenUser = async (refreshToken: string): Promise<string> =>
             roles: data.roles
         }
 
-        setCookie(undefined, Library.DASHGOTOKEN, data.token, { maxAge: Library.TIMETOLIVECOOKIE, path: "/" });
-        setCookie(undefined, Library.DASHGOREFRESHTOKEN, data.refreshToken, { maxAge: Library.TIMETOLIVECOOKIE, path: "/" });
+        setCookie(ctx, Library.DASHGOTOKEN, data.token, { maxAge: Library.TIMETOLIVECOOKIE, path: "/" });
+        setCookie(ctx, Library.DASHGOREFRESHTOKEN, data.refreshToken, { maxAge: Library.TIMETOLIVECOOKIE, path: "/" });
 
         apiAuthentication.defaults.headers['Authorization'] = `Bearer ${data.token}`;
 

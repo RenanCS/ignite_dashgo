@@ -1,8 +1,8 @@
 import { SignInCredentials, UserCredencials } from "src/contexts/AuthContext/interface";
-import { apiAuthentication } from "src/services/axios/autentication";
 import { CredencialResponse } from "./interface";
 import { setCookie } from "nookies";
 import { Library } from "src/util/readOnly";
+import { apiAuthentication } from "src/services/axios/apiClient";
 
 export const authenticationUser = async ({ email, password }: SignInCredentials): Promise<UserCredencials> => {
     try {

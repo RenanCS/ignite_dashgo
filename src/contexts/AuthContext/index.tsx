@@ -5,6 +5,7 @@ import { authenticationUser } from "src/controllers/authenticationUser";
 import { meUser } from "src/controllers/meUser";
 import { Library } from "src/util/readOnly";
 import { AuthContextData, AuthProviderProps, SignInCredentials, UserCredencials } from "./interface";
+import { apiAuthentication } from "src/services/axios/apiClient";
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -36,7 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         if (token) {
 
-            const authenticated = await meUser();
+            const authenticated = await meUser(apiAuthentication);
 
             if (!!authenticated) {
 

@@ -9,6 +9,8 @@ import { Pagination } from "src/components/Pagination";
 import { Menu } from "src/components/Sidebar/Menu";
 import { AuthContext } from "src/contexts/AuthContext";
 import { getUser } from "src/controllers/getUser";
+import { meUser } from "src/controllers/meUser";
+import { setupApiClient } from "src/services/axios/autentication";
 import { useUsers } from "src/services/hooks/useUser";
 import { queryClient } from "src/services/queryClient";
 import { Library } from "src/util/readOnly";
@@ -149,6 +151,12 @@ export default Users
 
 
 export const getServerSideProps: GetServerSideProps = withSSRAuth(async (ctx) => {
+    const apiClient = setupApiClient(ctx);
+
+    const authenticated = await meUser(apiClient);
+
+    console.log(authenticated);
+
     return {
         props: {
 

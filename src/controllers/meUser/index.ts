@@ -1,11 +1,11 @@
 
+import { AxiosInstance } from "axios";
 import { UserCredencials } from "src/contexts/AuthContext/interface";
-import { apiAuthentication } from "src/services/axios/autentication";
 import { CredencialResponse } from "../authenticationUser/interface";
 
-export const meUser = async (): Promise<Partial<UserCredencials>> => {
+export const meUser = async (apiClient: AxiosInstance): Promise<Partial<UserCredencials>> => {
     try {
-        const { data } = await apiAuthentication.get<CredencialResponse>(`/me`);
+        const { data } = await apiClient.get<CredencialResponse>(`/me`);
 
         const credencial: Partial<UserCredencials> = {
             permissions: data.permissions,
