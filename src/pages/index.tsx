@@ -1,12 +1,13 @@
-import type { NextPage } from 'next'
 import { Button, Flex, Stack } from '@chakra-ui/react'
-import { Input } from 'src/components/Form/Input'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import { useContext } from 'react'
-import { AuthContext } from 'src/contexts/AuthContext'
+import type { GetServerSideProps, NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Input } from 'src/components/Form/Input'
+import { AuthContext } from 'src/contexts/AuthContext'
+import { withSSRGuest } from 'src/util/withSSRGuest'
+import * as yup from "yup"
 
 
 const validationSchema = yup.object().shape({
@@ -82,3 +83,10 @@ const SignIn: NextPage = () => {
 }
 
 export default SignIn
+
+
+export const getServerSideProps: GetServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+})
