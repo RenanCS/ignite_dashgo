@@ -1,5 +1,5 @@
 import { Box, Button, Checkbox, Flex, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, Link } from "@chakra-ui/react";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import NextLink from "next/link";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
@@ -12,6 +12,7 @@ import { getUser } from "src/controllers/getUser";
 import { useUsers } from "src/services/hooks/useUser";
 import { queryClient } from "src/services/queryClient";
 import { Library } from "src/util/readOnly";
+import { withSSRAuth } from "src/util/withSSRAuth";
 
 
 const Users: NextPage = () => {
@@ -145,3 +146,12 @@ const Users: NextPage = () => {
 }
 
 export default Users
+
+
+export const getServerSideProps: GetServerSideProps = withSSRAuth(async (ctx) => {
+    return {
+        props: {
+
+        }
+    }
+})
