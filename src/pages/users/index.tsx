@@ -1,7 +1,7 @@
-import { Box, Button, Checkbox, Flex, Icon, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue, Link } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, Icon, Link, Spinner, Table, Tbody, Td, Text, Th, Thead, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import NextLink from "next/link";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
 import { Header } from "src/components/Header";
 import { Heading } from "src/components/Heading";
@@ -154,8 +154,8 @@ export const getServerSideProps: GetServerSideProps = withSSRAuth(async (ctx) =>
     const apiClient = setupApiClient(ctx);
 
     const authenticated = await meUser(apiClient);
-
     console.log(authenticated);
+
 
     return {
         props: {
