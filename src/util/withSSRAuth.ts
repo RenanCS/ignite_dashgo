@@ -1,5 +1,6 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { parseCookies } from "nookies";
+import { destroyCookie, parseCookies } from "nookies";
+import { AuthTokenError } from "src/services/errors/AuthTokenError";
 import { Library } from "./readOnly";
 
 export function withSSRAuth<T>(fn: GetServerSideProps<T>): GetServerSideProps {
@@ -16,6 +17,21 @@ export function withSSRAuth<T>(fn: GetServerSideProps<T>): GetServerSideProps {
             }
         }
 
-        return await fn(ctx);
+        try {
+            return await fn(ctx);
+        } catch (err) {
+            if (err instanceof AuthTokenError) {
+                destroyCookie(ctx, Library.DASHGOTOKEN);
+                destroyCookie(ctx, Library.DASHGOREFRESHTOKEN);
+
+                return {
+                    redirect: {
+                        destination: '/',
+                        permanent: false
+                    }
+                }
+            }
+        }
+
     }
 }
