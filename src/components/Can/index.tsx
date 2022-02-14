@@ -3,7 +3,7 @@ import { CanProps } from "./interface";
 
 export const Can: React.FC<CanProps> = ({ children, permissions = [], roles = [] }) => {
     const useCanSeeComponent = useCan({ permissions, roles });
-    debugger;
+
     if (!useCanSeeComponent) {
         return null;
     }

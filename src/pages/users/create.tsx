@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Flex, Heading, HStack, SimpleGrid, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -11,6 +11,7 @@ import { Menu } from "src/components/Sidebar/Menu";
 import { saveUser } from 'src/controllers/saveUser';
 import { queryClient } from "src/services/queryClient";
 import { Library } from "src/util/readOnly";
+import { withSSRAuth } from "src/util/withSSRAuth";
 import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
@@ -119,3 +120,16 @@ const CreateUser: NextPage = () => {
 }
 
 export default CreateUser
+
+
+export const getServerSideProps: GetServerSideProps = withSSRAuth(async (ctx) => {
+
+    return {
+        props: {
+
+        }
+    }
+}, {
+    permissions: ['users.create'],
+    roles: ['administrator']
+})
