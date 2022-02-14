@@ -153,12 +153,6 @@ export default Users
 
 
 export const getServerSideProps: GetServerSideProps = withSSRAuth(async (ctx) => {
-    const apiClient = setupApiClient(ctx);
-
-    const authenticated = await meUser(apiClient);
-    console.log(authenticated);
-
-
     return {
         props: {
 

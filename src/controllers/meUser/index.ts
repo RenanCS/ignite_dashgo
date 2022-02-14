@@ -14,7 +14,6 @@ export const meUser = async (apiClient: AxiosInstance): Promise<Partial<UserCred
 
         return credencial;
     } catch (err) {
-        console.log(err);
         return null;
     }
 
