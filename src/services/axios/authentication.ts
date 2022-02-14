@@ -4,6 +4,7 @@ import { destroyCookie, parseCookies } from 'nookies';
 import { refreshTokenUser } from 'src/controllers/refreshTokenUser';
 import { Library } from 'src/util/readOnly';
 import { api } from '.';
+import { AuthTokenError } from '../errors/AuthTokenError';
 
 let isRefreshing = false;
 let failedRequestsQueue = [];
@@ -11,6 +12,13 @@ let failedRequestsQueue = [];
 export const setupApiClient = (ctx = undefined): AxiosInstance => {
 
     let cookies = parseCookies(ctx);
+
+    const signOut = () => {
+        destroyCookie(ctx, Library.DASHGOTOKEN);
+        destroyCookie(ctx, Library.DASHGOREFRESHTOKEN);
+        Router.push('/');
+    };
+
 
     const apiAuthentication = axios.create({
         baseURL: process.env.NEXT_PUBLIC_API_SEGURANCA,
@@ -65,9 +73,12 @@ export const setupApiClient = (ctx = undefined): AxiosInstance => {
 
 
                 } else {
-                    destroyCookie(ctx, Library.DASHGOTOKEN);
-                    destroyCookie(ctx, Library.DASHGOREFRESHTOKEN);
-                    Router.push('/');
+                    if (process.browser) {
+                        signOut();
+                    }
+                    else {
+                        return Promise.reject(new AuthTokenError());
+                    }
                 }
             }
 

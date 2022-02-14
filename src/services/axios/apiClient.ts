@@ -1,3 +1,3 @@
-import { setupApiClient } from "./autentication";
+import { setupApiClient } from "./authentication";
 
 export const apiAuthentication = setupApiClient();

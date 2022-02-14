@@ -10,7 +10,7 @@ import { Menu } from "src/components/Sidebar/Menu";
 import { AuthContext } from "src/contexts/AuthContext";
 import { getUser } from "src/controllers/getUser";
 import { meUser } from "src/controllers/meUser";
-import { setupApiClient } from "src/services/axios/autentication";
+import { setupApiClient } from "src/services/axios/authentication";
 import { useUsers } from "src/services/hooks/useUser";
 import { queryClient } from "src/services/queryClient";
 import { Library } from "src/util/readOnly";
