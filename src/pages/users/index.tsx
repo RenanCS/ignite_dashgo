@@ -10,6 +10,7 @@ import { Menu } from "src/components/Sidebar/Menu";
 import { AuthContext } from "src/contexts/AuthContext";
 import { getUser } from "src/controllers/getUser";
 import { meUser } from "src/controllers/meUser";
+import { useCan } from "src/hooks/useCan";
 import { setupApiClient } from "src/services/axios/authentication";
 import { useUsers } from "src/services/hooks/useUser";
 import { queryClient } from "src/services/queryClient";
@@ -22,6 +23,7 @@ const Users: NextPage = () => {
     const { isAuthenticated } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1)
     const { data, isLoading, error, isFetching } = useUsers(currentPage);
+    const userCanSeeMetrics = useCan({ permissions: ['metrics.list'] });
 
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -38,6 +40,13 @@ const Users: NextPage = () => {
     }, [])
 
     const renderTable = (): JSX.Element => {
+        if (!userCanSeeMetrics) {
+            return (
+                <Flex justify="center">
+                    <Text>Usuário não tem permissão de visualizar as métricas</Text>
+                </Flex>
+            )
+        }
         if (isLoading) {
             return (<Flex justify="center"><Spinner /></Flex>);
         }
