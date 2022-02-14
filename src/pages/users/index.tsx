@@ -3,6 +3,7 @@ import { GetServerSideProps, NextPage } from "next";
 import NextLink from "next/link";
 import { useCallback, useContext, useState } from "react";
 import { RiAddLine, RiPencilLine } from "react-icons/ri";
+import { Can } from "src/components/Can";
 import { Header } from "src/components/Header";
 import { Heading } from "src/components/Heading";
 import { Pagination } from "src/components/Pagination";
@@ -23,7 +24,6 @@ const Users: NextPage = () => {
     const { isAuthenticated } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1)
     const { data, isLoading, error, isFetching } = useUsers(currentPage);
-    const userCanSeeMetrics = useCan({ permissions: ['metrics.list'] });
 
     const isWideVersion = useBreakpointValue({
         base: false,
@@ -40,13 +40,6 @@ const Users: NextPage = () => {
     }, [])
 
     const renderTable = (): JSX.Element => {
-        if (!userCanSeeMetrics) {
-            return (
-                <Flex justify="center">
-                    <Text>Usuário não tem permissão de visualizar as métricas</Text>
-                </Flex>
-            )
-        }
         if (isLoading) {
             return (<Flex justify="center"><Spinner /></Flex>);
         }
@@ -59,7 +52,7 @@ const Users: NextPage = () => {
         }
         else {
             return (
-                <>
+                <Can permissions={['metrics.list']}>
                     <Table colorScheme="whiteAlpha">
                         <Thead>
                             <Tr>
@@ -115,7 +108,7 @@ const Users: NextPage = () => {
                         currentPage={currentPage}
                         onPageChange={setCurrentPage}
                     />
-                </>
+                </Can>
             )
         }
     }

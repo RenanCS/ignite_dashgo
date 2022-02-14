@@ -5,7 +5,7 @@ import { UseCanParams } from "./interface"
 export const useCan = ({ permissions = [], roles = [] }: UseCanParams): Boolean => {
 
     const { userAuthenticated, isAuthenticated } = useContext(AuthContext);
-
+    debugger;
     if (!isAuthenticated) {
         return false;
     }
