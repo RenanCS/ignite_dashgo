@@ -7,6 +7,8 @@ import { Library } from "src/util/readOnly";
 import { AuthContextData, AuthProviderProps, SignInCredentials, UserCredencials } from "./interface";
 import { apiAuthentication } from "src/services/axios/apiClient";
 
+let authChannel: BroadcastChannel;
+
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
@@ -26,8 +28,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [])
 
     const signOut = useCallback(() => {
+        authChannel = new BroadcastChannel('auth');
+
         destroyCookie(undefined, Library.DASHGOTOKEN);
         destroyCookie(undefined, Library.DASHGOREFRESHTOKEN);
+        authChannel.postMessage('signOut');
         Router.push('/');
     }, [])
 
@@ -53,10 +58,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [])
 
     useEffect(() => {
-        getMeInfo()
-
+        getMeInfo();
     }, [getMeInfo])
 
+
+    useEffect(() => {
+        authChannel = new BroadcastChannel('auth');
+
+        authChannel.onmessage = (message) => {
+            if (message.data === "signOut") {
+                signOut();
+            }
+        }
+    }, [signOut])
 
     return (
         <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, userAuthenticated }}>
